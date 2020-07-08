@@ -242,9 +242,9 @@ export class CppBuildTaskProvider implements vscode.TaskProvider {
 
 class CustomBuildTaskTerminal implements vscode.Pseudoterminal {
     private writeEmitter  = new vscode.EventEmitter<string>();
-    private closeEmitter = new vscode.EventEmitter<void>();
+    private closeEmitter = new vscode.EventEmitter<number>();
     public get onDidWrite(): vscode.Event<string> { return this.writeEmitter.event; }
-    public get onDidClose(): vscode.Event<void> { return this.closeEmitter.event; }
+    public get onDidClose(): vscode.Event<number> { return this.closeEmitter.event; }
 
     private fileWatcher: vscode.FileSystemWatcher | undefined;
 
@@ -299,7 +299,7 @@ class CustomBuildTaskTerminal implements vscode.Pseudoterminal {
                 }
             });
         }).finally (() => {
-            this.closeEmitter.fire();
+            this.closeEmitter.fire(0);
         });
     }
 
